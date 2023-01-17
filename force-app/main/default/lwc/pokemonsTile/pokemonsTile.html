@@ -1,0 +1,192 @@
+<template>
+    <lightning-card  title={pokemon.Name} icon-name="standard:document">
+    
+		<!-- Body start -->
+        <div class="slds-var-p-horizontal_small slds-align_absolute-center">
+            <div class="slds-align_absolute-center" onclick={navigateToRecordViewPage}>
+                <img
+                    class="slds-align_absolute-center pokemon"
+                    src={pokemon.Image__c}
+                    alt={pokemon.Name}
+                />
+            </div>
+        </div>
+
+
+		<div class="slds-media__body">
+			<p class="slds-align_absolute-center slds-text-title_bold">Pokemon Id: {pokemon.ExtId__c}</p>
+			<p class="slds-align_absolute-center slds-text-title_bold">Height: {pokemon.Height__c} mts</p>
+			<p class="slds-align_absolute-center slds-text-title_bold">Weight: {pokemon.Weight__c} kg</p>
+			<p class="slds-align_absolute-center slds-text-title_bold">Generation: {pokemon.Generation__c}</p>
+		</div>
+
+
+        <!-- iconos segun el tipo de pokemon -->
+    	<div class="slds-var-p-horizontal_small slds-align_absolute-center">
+			
+			<template if:true={isNormal}>
+				<lightning-icon 
+					icon-name="standard:lead"
+					alternative-text="Normal"
+					title="Normal"
+					class="slds-var-m-left_small">
+				</lightning-icon>
+			</template>
+	
+			<template if:true={isFighting}>
+				<lightning-icon 
+					icon-name="custom:custom91"
+					alternative-text="Fighting"
+					title="Fighting"
+					class="slds-var-m-left_small">
+				</lightning-icon>
+			</template>
+	
+			<template if:true={isFlying}>
+				<lightning-icon 
+					icon-name="custom:custom20"
+					alternative-text="Flying"
+					title="Flying"
+					class="slds-var-m-left_small">
+				</lightning-icon>
+			</template>
+	
+			<template if:true={isPoison}>
+				<lightning-icon 
+					icon-name="standard:recipe"
+					alternative-text="Poison"
+					title="Poison"
+					class="slds-var-m-left_small">
+				</lightning-icon>
+			</template>
+	
+			<template if:true={isGround}>
+				<lightning-icon 
+					icon-name="standard:order_item"
+					alternative-text="Ground"
+					title="Ground"
+					class="slds-var-m-left_small">
+				</lightning-icon>
+			</template>
+	
+			<template if:true={isRock}>
+				<lightning-icon 
+					icon-name="standard:password"
+					alternative-text="Rock"
+					title="Rock"
+					class="slds-var-m-left_small">
+				</lightning-icon>
+			</template>
+				
+			<template if:true={isBug}>
+				<lightning-icon 
+					icon-name="custom:custom34"
+					alternative-text="Bug"
+					title="Bug"
+					class="slds-var-m-left_small">
+				</lightning-icon>
+			</template>
+	
+			<template if:true={isGhost}>
+				<lightning-icon 
+					icon-name="standard:approval"
+					alternative-text="Ghost"
+					title="Ghost"
+					class="slds-var-m-left_small">
+				</lightning-icon>
+			</template>
+	
+			<template if:true={isSteel}>
+				<lightning-icon 
+					icon-name="standard:textbox"
+					alternative-text="Steel"
+					title="Steel"
+					class="slds-var-m-left_small">
+				</lightning-icon>
+			</template>
+	
+			<template if:true={isFire}>
+				<lightning-icon 
+					icon-name="custom:custom3"
+					alternative-text="Fire"
+					title="Fire"
+					class="slds-var-m-left_small">
+				</lightning-icon>
+			</template>
+	
+			<template if:true={isWater}>
+				<lightning-icon 
+					icon-name="standard:water"
+					alternative-text="Water"
+					title="Water"
+					class="slds-var-m-left_small">
+				</lightning-icon>
+			</template>
+	
+			<template if:true={isGrass}>
+				<lightning-icon 
+					icon-name="custom:custom5"
+					alternative-text="Grass"
+					title="Grass"
+					class="slds-var-m-left_small">
+				</lightning-icon>
+			</template>
+				
+			<template if:true={isElectric}>
+				<lightning-icon 
+					icon-name="standard:custom_notification"
+					alternative-text="Electric"
+					title="Electric"
+					class="slds-var-m-left_small">
+				</lightning-icon>
+			</template>
+	
+			<template if:true={isPsychic}>
+				<lightning-icon 
+					icon-name="standard:skill_entity"
+					alternative-text="Psychic"
+					title="Psychic"
+					class="slds-var-m-left_small">
+				</lightning-icon>
+			</template>
+	
+			<template if:true={isIce}>
+				<lightning-icon 
+					icon-name="custom:custom8"
+					alternative-text="Ice"
+					title="Ice"
+					class="slds-var-m-left_small">
+				</lightning-icon>
+			</template>
+	
+			<template if:true={isDragon}>
+				<lightning-icon 
+					icon-name="custom:custom58"
+					alternative-text="Dragon"
+					title="Dragon"
+					class="slds-var-m-left_small">
+				</lightning-icon>
+			</template>
+	
+			<template if:true={isDark}>
+				<lightning-icon 
+					icon-name="standard:tableau"
+					alternative-text="Dark"
+					title="Dark"
+					class="slds-var-m-left_small">
+				</lightning-icon>
+			</template>
+	
+			<template if:true={isFairy}>
+				<lightning-icon 
+					icon-name="standard:tableau"
+					alternative-text="Fairy"
+					title="Fairy"
+					class="slds-var-m-left_small">
+				</lightning-icon>
+			</template>
+			<!-- body end -->
+    	</div>
+
+    </lightning-card>
+</template>

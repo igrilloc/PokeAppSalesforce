@@ -1,0 +1,80 @@
+<template>
+    <div class="slds-container_x-large slds-container_center slds-box">
+        <template if:true={allData}>
+
+            <!-- Pokemons Filters -->
+            <div class="slds-grid slds-p-around_small slds-align_absolute-center">
+                
+                <div class="slds-size_1-of-3 slds-align_absolute-center">
+                    <div class="slds-box slds-size_medium">
+                        <div class="slds-text-heading_medium slds-p-around_x-small slds-align_absolute-center" style="color:white;">Name</div>
+                        <lightning-input 
+                            type="search" 
+                            onchange={handleSearchTextChange}  
+                            value={searchText}
+                            placeholder="Search Pokemon name"
+                            variant="label-hidden"
+                            class="slds-size_small slds-align_absolute-center"> 
+                        </lightning-input>
+                    </div>
+                </div>
+
+                <div class="slds-size_1-of-3 slds-align_absolute-center">
+					<div class="slds-box slds-size_medium">
+						<div class="slds-text-heading_medium slds-p-around_x-small slds-align_absolute-center" style="color:white;">Generation</div>
+                        <lightning-combobox 
+                            value={generationValueDefault} 
+                            options={optionsGeneration} 
+                            onchange={handleGeneracionChange} 
+                            variant="label-hidden"
+                            class="slds-size_small slds-align_absolute-center">
+                        </lightning-combobox>
+					</div>
+				</div>
+
+                <div class="slds-size_1-of-3 slds-align_absolute-center">
+					<div class="slds-box slds-size_medium">
+						<div class="slds-text-heading_medium slds-p-around_x-small slds-align_absolute-center" style="color:white;">Type</div>
+                        <lightning-combobox 
+                            value={typeValueDefault} 
+                            options={optionsType} 
+                            onchange={handleTypeChange}
+                            variant="label-hidden" 
+                            class="slds-size_small slds-align_absolute-center">
+                        </lightning-combobox>
+					</div>
+				</div>
+
+            </div>
+            
+						
+            <!-- Pokemons Tile -->
+            <lightning-layout multiple-rows="true" pull-to-boundary="small" class="slds-container_x-large slds-align_absolute-center">
+                <template if:true={allData}>
+                    <template for:each={pageData} for:item="pokemonItem">
+                        <lightning-layout-item key={pokemonItem.Id} size="3" class="slds-p-around_x-small">
+                            <c-pokemons-tile
+                                pokemon={pokemonItem}
+                                class="slds-col slds-var-m-around_small">
+                            </c-pokemons-tile>
+                        </lightning-layout-item>
+                    </template>
+                </template>
+            </lightning-layout>
+
+
+            <!-- Paged -->
+            <div class="slds-align_absolute-center">
+                <lightning-button-group>
+                    <lightning-button label="&#x00AB;" onclick={first}></lightning-button>
+                    <lightning-button label="&lt;" onclick={previous}></lightning-button>
+                    <lightning-button label={pageNumber} variant="destructive"></lightning-button>
+                    <lightning-button label="&gt;" onclick={next}></lightning-button>
+                    <lightning-button label="&#x00BB;" onclick={last}></lightning-button>
+                </lightning-button-group>
+            </div>
+           
+
+        </template>
+    </div>
+</template> 
