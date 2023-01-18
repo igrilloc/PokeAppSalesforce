@@ -16,7 +16,7 @@ escenarios adicionales.
 */
 
 @isTest
-public class AbilityBatchTest {
+public with sharing class AbilityBatchTest {
     
     @isTest
     static void testAbilityBatch() {
@@ -33,8 +33,10 @@ public class AbilityBatchTest {
 
         // Test start method
         AbilityBatch abilityBatch = new AbilityBatch(testAbilityList);
-        
         Iterable<Integer> startResult = abilityBatch.start(null);
+        
+        String json = '{"Name":"Adaptability","id":91,"effect_entries":[{"effect":"This Pokémon moves are powered up a little by same-type attack bonuses.","language":{"name":"en","url":"https://pokeapi.co/api/v2/language/9/"},"short_effect":"STAB moves have 1.2x power."}]}';
+        Test.setMock(HttpCalloutMock.class, new PokemonBatchMock(json, 200));
         
         System.assertEquals(testAbilityList, startResult);
 
@@ -43,21 +45,45 @@ public class AbilityBatchTest {
             abilityBatch.execute(null, testAbilityList);
         Test.stopTest();
 
-        /*
         // Verify that the abilities were inserted
         List<Ability__c> insertedAbilities = [
             SELECT Id 
-            FROM Ability__c 
-            WHERE Id 
-            IN :testAbilityList
+            FROM Ability__c  
+            LIMIT 1
         ];
-        */
-
-        // System.assertEquals(testAbilityList.size(), insertedAbilities.size());
+        
+        System.assertEquals(testAbilityList.size(), insertedAbilities.size());
 
         // Test finish method
         Test.startTest();
             abilityBatch.finish(null);
         Test.stopTest();
+    }
+    
+    @isTest
+    static void testAbilityBatchError() {
+        
+        // Create test data
+        List<Integer> testAbilityList = new List<Integer> {1, 2, 3};
+        List<Ability__c> testAbilities = new List<Ability__c>();
+        
+        for (Integer i : testAbilityList) {
+            testAbilities.add(new Ability__c(Name = 'Ability ' + i));
+        }
+        
+        insert testAbilities;
+    
+        // Test start method
+        AbilityBatch abilityBatch = new AbilityBatch(testAbilityList);
+        
+        String json2 = '{"Name":"Adaptability","id":91,"effect_entries":[{"effect":"This Pokémon moves are powered up a little by same-type attack bonuses.","language":{"name":"en","url":"https://pokeapi.co/api/v2/language/9/"},"short_effect":"STAB moves have 1.2x power."}]}';
+        Test.setMock(HttpCalloutMock.class, new PokemonBatchMock(json2, 400));
+        
+        // Test execute method
+        Test.startTest();
+            abilityBatch.execute(null, testAbilityList);
+        Test.stopTest();
+    
+        // System.assertEquals(null);
     }
 }

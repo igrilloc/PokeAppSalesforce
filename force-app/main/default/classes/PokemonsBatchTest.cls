@@ -2,37 +2,73 @@
 public with sharing class PokemonsBatchTest {
     
     @isTest
-    public static void PokemonsBatchTest() {
+    static void PokemonsBatchTest() {
         
-        List<Pokemon__c> PokemonList= new List<Pokemon__c>();
+        // Create test data
+        List<Integer> testPokemonsList = new List<Integer> {1, 2, 3};
+        List<Pokemon__c> testPokemons = new List<Pokemon__c>();
     	
-        for(integer i = 1; i < 200; i++) {
-            
-            Pokemon__c newPokemonId = new Pokemon__c();
-            newPokemonId.ExtId__c = i;
-            
-            PokemonList.add(newPokemonId);
+        for (integer i : testPokemonsList) {
+            testPokemons.add(new Pokemon__c(Name = 'PokeName ' + i));
     	}
         
-        if(!PokemonList.isEmpty()) insert PokemonList;
-
+        insert testPokemons;
+        
+		// Test start method
+        PokemonsBatch pokemonsBatch = new PokemonsBatch(testPokemonsList);        
+        Iterable<Integer> startResult = pokemonsBatch.start(null);
+  
         String pokemonTest = '{"height":8,"id":135,"name":"Test","order":218,"sprites":{"front_default":"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/135.png"},"types":[{"type":{"name":"electric"}},{"type":{"name":"fire"}}],"weight":245}';
         
-        test.setMock(HttpCalloutMock.class, new PokemonBatchMock(pokemonTest, 200));
-        // PokemonsBatch bacth = new PokemonsBatch(PokemonList);
-            
-        /*    
+        Test.setMock(HttpCalloutMock.class, new PokemonBatchMock(pokemonTest, 200));
+        
+		System.assertEquals(testPokemonsList, startResult);   
+        
+        // Test execute method
         Test.startTest();
-        	Database.executeBatch(bacth, 100);
+            pokemonsBatch.execute(null, testPokemonsList);
         Test.stopTest();
-		*/
-
-        List<Pokemon__c> pokemonToTest = [
-            SELECT Name 
-            FROM Pokemon__c 
-            WHERE Name = 'Test'
+        
+        // Verify that the abilities were inserted
+        List<Pokemon__c> insertedPokemon = [
+            SELECT Id 
+            FROM Pokemon__c  
+            LIMIT 1
         ];
-		
-        system.assertEquals(pokemonToTest.get(0).Name, 'Test');  
+        
+        System.assertEquals(testPokemonsList.size(), insertedPokemon.size());
+
+        // Test finish method
+        Test.startTest();
+            pokemonsBatch.finish(null);
+        Test.stopTest();
     }
+    
+    @isTest
+    static void testAbilityBatchError() {
+        
+        // Create test data
+        List<Integer> testPokemonsList = new List<Integer> {1, 2, 3};
+        List<Pokemon__c> testPokemons = new List<Pokemon__c>();
+    	
+        for (integer i : testPokemonsList) {
+            testPokemons.add(new Pokemon__c(Name = 'PokeName ' + i));
+    	}
+        
+        insert testPokemons;
+    
+        // Test start method
+        PokemonsBatch pokemonsBatch = new PokemonsBatch(testPokemonsList);
+        
+        String json2 = '{"height":8,"id":135,"name":"Test","order":218,"sprites":{"front_default":"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/135.png"},"types":[{"type":{"name":"electric"}},{"type":{"name":"fire"}}],"weight":245}';
+        Test.setMock(HttpCalloutMock.class, new PokemonBatchMock(json2, 400));
+        
+        // Test finish method
+        Test.startTest();
+            pokemonsBatch.finish(null);
+        Test.stopTest();
+    
+        // System.assertEquals(null);
+    }
+        
 }

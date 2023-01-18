@@ -43,7 +43,6 @@ public class AbilityBatch implements Database.Batchable<Integer>, Database.Allow
         Integer abilityId = Integer.valueOf(records[0]);
         Ability__c abilityToInsert = AbilityHelperBatch.getAbility(abilityId);
 
-        
         try {
 
             if(abilityToInsert != null) {

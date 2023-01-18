@@ -21,7 +21,7 @@ public with sharing class PokemonsServiceTest {
             LIMIT 1
         ];
  
-        List<Pokemon__c> pokemonSearch = PokemonsService.getFilteredPokemon('', 'All', '0');
+        List<Pokemon__c> pokemonSearch = PokemonsService.getFilteredPokemon('', '', '0');
         
         System.assertEquals(pokemonSearch.get(0), pokemonToTest.get(0));
     }
