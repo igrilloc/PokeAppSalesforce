@@ -1,5 +1,4 @@
 /* DESCRIPCION:
-
 La clase Apex "AbilityBatch" implementa la interfaz "Database.Batchable" y "Database.AllowsCallouts" y 
 "Database.Stateful". Esto significa que esta clase puede ser utilizada para procesar datos en lotes y 
 también permite hacer llamadas a servicios externos y almacenar información de estado.
@@ -17,7 +16,6 @@ en la base de datos. Si ocurre una excepción durante la inserción, se muestra 
 
 Finalmente, el método "finish" es utilizado para ejecutar cualquier operación de procesamiento posterior. 
 En este caso, simplemente se muestra un mensaje de depuración indicando que el procesamiento en lotes ha finalizado.
-
 */
 
 
@@ -43,15 +41,9 @@ public class AbilityBatch implements Database.Batchable<Integer>, Database.Allow
         Integer abilityId = Integer.valueOf(records[0]);
         Ability__c abilityToInsert = AbilityHelperBatch.getAbility(abilityId);
 
-        try {
-
             if(abilityToInsert != null) {
                 insert abilityToInsert;
             }
-        } 
-        catch (Exception error) {
-            System.debug('Error inserting ability');
-        }
     }
     
     public void finish(Database.BatchableContext bc) {

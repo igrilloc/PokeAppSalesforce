@@ -19,17 +19,11 @@ public class MovementsBatch implements Database.Batchable<Integer>, Database.All
         // process each batch of records
         Integer movimientId = Integer.valueOf(records[0]);
         Movement__c movimientToInsert = MovementsHelperBatch.getMovimiento(movimientId);
-        
-
-        try {
 
             if(movimientToInsert != null) {
                 insert movimientToInsert;
             }
-        } 
-        catch (Exception error) {
-            System.debug('Error inserting ability');
-        }
+      
     }
 
     public void finish(Database.BatchableContext bc) {

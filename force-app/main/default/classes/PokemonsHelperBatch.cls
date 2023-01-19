@@ -136,7 +136,7 @@ public with sharing class PokemonsHelperBatch {
         }
        
  	           
-        System.debug('Your pokemon is: ' + newPokemon);      
+        // System.debug('Your pokemon is: ' + newPokemon);      
         return newPokemon;  
     }
 }

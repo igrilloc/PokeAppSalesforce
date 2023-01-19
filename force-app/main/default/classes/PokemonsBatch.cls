@@ -3,6 +3,7 @@ public class PokemonsBatch implements Database.Batchable<Integer>,Database.Allow
 
     List<Integer> PokemonList;
     
+    
     public PokemonsBatch(List<Integer> PokemonList) {
         this.PokemonList = PokemonList;
     }
@@ -19,15 +20,8 @@ public class PokemonsBatch implements Database.Batchable<Integer>,Database.Allow
         Integer pokemonId = Integer.valueOf(records[0]);
         Pokemon__c pokemonToInsert = PokemonsHelperBatch.getPokemon(pokemonId);
 
-
-        try {
-
-            if(pokemonToInsert != null) {
-                insert pokemonToInsert;
-            }
-        } 
-        catch (Exception error) {
-            System.debug('Error inserting Pokemon');
+        if(pokemonToInsert != null) {
+        	insert pokemonToInsert;
         }
     }
 

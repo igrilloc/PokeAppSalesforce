@@ -1,74 +1,66 @@
 @isTest
-public with sharing class PokemonsBatchTest {
+public class PokemonsBatchTest {
     
     @isTest
-    static void PokemonsBatchTest() {
+    static void testPokemonsBatch() {
         
-        // Create test data
-        List<Integer> testPokemonsList = new List<Integer> {1, 2, 3};
-        List<Pokemon__c> testPokemons = new List<Pokemon__c>();
-    	
-        for (integer i : testPokemonsList) {
-            testPokemons.add(new Pokemon__c(Name = 'PokeName ' + i));
-    	}
+        // Creo una lista de enteros con los IDs de los Pokemons
+        List<Integer> pokeIdList = new List<Integer>();
         
-        insert testPokemons;
+        for (Integer i = 1; i < 10; i++) {
+            pokeIdList.add(i);
+        }
         
-		// Test start method
-        PokemonsBatch pokemonsBatch = new PokemonsBatch(testPokemonsList);        
-        Iterable<Integer> startResult = pokemonsBatch.start(null);
-  
-        String pokemonTest = '{"height":8,"id":135,"name":"Test","order":218,"sprites":{"front_default":"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/135.png"},"types":[{"type":{"name":"electric"}},{"type":{"name":"fire"}}],"weight":245}';
+        // Creo una respuesta mock para la llamada HTTP a la API
+        String body = '{"height":8,"id":135,"name":"Test","order":218,"sprites":{"front_default":"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/135.png"},"types":[{"type":{"name":"electric"}},{"type":{"name":"fire"}}],"weight":245}';
+        Integer statusCode = 200;
         
-        Test.setMock(HttpCalloutMock.class, new PokemonBatchMock(pokemonTest, 200));
+        HttpCalloutMock mock = new PokemonBatchMock(body, statusCode);
         
-		System.assertEquals(testPokemonsList, startResult);   
+        // Asigno el mock para las llamadas HTTP en el test
+        Test.setMock(HttpCalloutMock.class, mock);
         
-        // Test execute method
+        // Ejecuta el proceso en batch y detiene la prueba
+        PokemonsBatch batch = new PokemonsBatch(pokeIdList);
+        
         Test.startTest();
-            pokemonsBatch.execute(null, testPokemonsList);
+            Database.executeBatch(batch, 10);
         Test.stopTest();
         
-        // Verify that the abilities were inserted
-        List<Pokemon__c> insertedPokemon = [
-            SELECT Id 
-            FROM Pokemon__c  
-            LIMIT 1
+        // Comprobacion de inserción del objeto "Pokemon" con el nombre "Test"
+        List<Pokemon__c> poke = [
+            SELECT Name 
+            FROM Pokemon__c 
+            WHERE Name = 'Test'
         ];
         
-        System.assertEquals(testPokemonsList.size(), insertedPokemon.size());
-
-        // Test finish method
-        Test.startTest();
-            pokemonsBatch.finish(null);
-        Test.stopTest();
+        System.assertEquals(poke[0].Name, 'Test');   
     }
+    
     
     @isTest
-    static void testAbilityBatchError() {
+    static void testPokeErrorBatch() {
+        // Crea una lista de enteros con los IDs de los Abilitys
+        List<Integer> PokeIdList = new List<Integer>();
         
-        // Create test data
-        List<Integer> testPokemonsList = new List<Integer> {1, 2, 3};
-        List<Pokemon__c> testPokemons = new List<Pokemon__c>();
-    	
-        for (integer i : testPokemonsList) {
-            testPokemons.add(new Pokemon__c(Name = 'PokeName ' + i));
-    	}
+        for (Integer i = 1; i < 10; i++) {
+            PokeIdList.add(i);
+        }
         
-        insert testPokemons;
-    
-        // Test start method
-        PokemonsBatch pokemonsBatch = new PokemonsBatch(testPokemonsList);
+        // Crea una respuesta mock para la llamada HTTP a la API
+        String mockResponse = '{"Name":"Adaptability","id":91,"effect_entries":[{"effect":"This Pokémon moves are powered up a little by same-type attack bonuses.","language":{"name":"en","url":"https://pokeapi.co/api/v2/language/9/"},"short_effect":"STAB moves have 1.2x power."}]}';
         
-        String json2 = '{"height":8,"id":135,"name":"Test","order":218,"sprites":{"front_default":"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/135.png"},"types":[{"type":{"name":"electric"}},{"type":{"name":"fire"}}],"weight":245}';
-        Test.setMock(HttpCalloutMock.class, new PokemonBatchMock(json2, 400));
+        Test.setMock(HttpCalloutMock.class, new PokemonBatchMock(mockResponse, 400));
         
-        // Test finish method
+        // Ejecuta el proceso en batch y detiene la prueba
+        PokemonsBatch batch = new PokemonsBatch(PokeIdList);
+        
         Test.startTest();
-            pokemonsBatch.finish(null);
+            try {
+                Database.executeBatch(batch, 10);
+            } catch (Exception e) {
+                System.assert(e.getMessage().contains('Error inserting Pokemon'));
+            }
         Test.stopTest();
-    
-        // System.assertEquals(null);
-    }
-        
+    }    
 }

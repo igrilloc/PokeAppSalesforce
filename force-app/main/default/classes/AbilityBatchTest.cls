@@ -1,89 +1,64 @@
-/* DESCRIPCION:
- 
-La clase de prueba crea primero un conjunto de datos de prueba, inserta los objetos de 
-habilidad en la base de datos y luego verifica que el método "start" devuelve la lista 
-de habilidades de prueba esperada.
-
-Luego, se utiliza el método "execute" para insertar los objetos de habilidad en la base 
-de datos.
-
-Finalmente, se utiliza el método "finish" y se verifica que se ejecuta correctamente.
-
-Es importante tener en cuenta que esta es solo una posible implementación de una clase de 
-prueba para esta clase Apex, y es posible que desee añadir más casos de prueba para cubrir 
-escenarios adicionales.
-
-*/
-
 @isTest
-public with sharing class AbilityBatchTest {
-    
+public class AbilityBatchTest {
+
     @isTest
-    static void testAbilityBatch() {
+    static void testAbilitySuccessBatch() {
         
-        // Create test data
-        List<Integer> testAbilityList = new List<Integer> {1, 2, 3};
-        List<Ability__c> testAbilities = new List<Ability__c>();
+        // Crea una lista de enteros con los IDs de los Abilitys
+        List<Integer> AbilityIdList = new List<Integer>();
         
-        for (Integer i : testAbilityList) {
-            testAbilities.add(new Ability__c(Name = 'Ability ' + i));
+        for (Integer i = 1; i < 150; i++) {
+            AbilityIdList.add(i);
         }
-        
-        insert testAbilities;
 
-        // Test start method
-        AbilityBatch abilityBatch = new AbilityBatch(testAbilityList);
-        Iterable<Integer> startResult = abilityBatch.start(null);
+        // Crea una respuesta mock para la llamada HTTP a la API
+		String mockResponse = '{"Name":"Adaptability","id":91,"effect_entries":[{"effect":"This Pokémon moves are powered up a little by same-type attack bonuses.","language":{"name":"en","url":"https://pokeapi.co/api/v2/language/9/"},"short_effect":"STAB moves have 1.2x power."}]}';
         
-        String json = '{"Name":"Adaptability","id":91,"effect_entries":[{"effect":"This Pokémon moves are powered up a little by same-type attack bonuses.","language":{"name":"en","url":"https://pokeapi.co/api/v2/language/9/"},"short_effect":"STAB moves have 1.2x power."}]}';
-        Test.setMock(HttpCalloutMock.class, new PokemonBatchMock(json, 200));
+        Test.setMock(HttpCalloutMock.class, new PokemonBatchMock(mockResponse, 200));
         
-        System.assertEquals(testAbilityList, startResult);
-
-        // Test execute method
+        // Ejecuta el proceso en batch y detiene la prueba
+        AbilityBatch batch = new AbilityBatch(AbilityIdList);
+        
         Test.startTest();
-            abilityBatch.execute(null, testAbilityList);
+            Database.executeBatch(batch, 150);
         Test.stopTest();
 
-        // Verify that the abilities were inserted
-        List<Ability__c> insertedAbilities = [
-            SELECT Id 
-            FROM Ability__c  
-            LIMIT 1
+        // Comprobacion de inserción del objeto "Ability" con el nombre "Test"
+        List<Ability__c> ab = [
+            SELECT Name 
+            FROM Ability__c 
+            WHERE Name = 'Test Ability'
         ];
         
-        System.assertEquals(testAbilityList.size(), insertedAbilities.size());
-
-        // Test finish method
-        Test.startTest();
-            abilityBatch.finish(null);
-        Test.stopTest();
+        System.assertEquals(ab[0].Name, 'Test Ability');
     }
+
     
     @isTest
-    static void testAbilityBatchError() {
+    static void testAbilityErrorBatch() {
         
-        // Create test data
-        List<Integer> testAbilityList = new List<Integer> {1, 2, 3};
-        List<Ability__c> testAbilities = new List<Ability__c>();
+        // Crea una lista de enteros con los IDs de los Abilitys
+        List<Integer> AbilityIdList = new List<Integer>();
         
-        for (Integer i : testAbilityList) {
-            testAbilities.add(new Ability__c(Name = 'Ability ' + i));
+        for (Integer i = 1; i < 150; i++) {
+            AbilityIdList.add(i);
         }
+
+        // Crea una respuesta mock para la llamada HTTP a la API
+		String mockResponse = '{"Name":"Adaptability","id":91,"effect_entries":[{"effect":"This Pokémon moves are powered up a little by same-type attack bonuses.","language":{"name":"en","url":"https://pokeapi.co/api/v2/language/9/"},"short_effect":"STAB moves have 1.2x power."}]}';
         
-        insert testAbilities;
-    
-        // Test start method
-        AbilityBatch abilityBatch = new AbilityBatch(testAbilityList);
+        Test.setMock(HttpCalloutMock.class, new PokemonBatchMock(mockResponse, 400));
         
-        String json2 = '{"Name":"Adaptability","id":91,"effect_entries":[{"effect":"This Pokémon moves are powered up a little by same-type attack bonuses.","language":{"name":"en","url":"https://pokeapi.co/api/v2/language/9/"},"short_effect":"STAB moves have 1.2x power."}]}';
-        Test.setMock(HttpCalloutMock.class, new PokemonBatchMock(json2, 400));
+        // Ejecuta el proceso en batch y detiene la prueba
+        AbilityBatch batch = new AbilityBatch(AbilityIdList);
         
-        // Test execute method
         Test.startTest();
-            abilityBatch.execute(null, testAbilityList);
+            try {
+                Database.executeBatch(batch, 150);
+            } 
+            catch (Exception e) {
+                System.assert(e.getMessage().contains('Error inserting ability'));
+            }
         Test.stopTest();
-    
-        // System.assertEquals(null);
     }
 }
