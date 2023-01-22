@@ -51,7 +51,7 @@ export default class PokemonList extends LightningElement {
 
 	// Set current page state
 	updatePage() {
-		this.pageData = this.allData.slice(this.pageNumber * 10, this.pageNumber * 10 + 10);
+		this.pageData = this.allData.slice(this.pageNumber * 12, this.pageNumber * 12 + 12);
 	}
 	
 	// Back a page

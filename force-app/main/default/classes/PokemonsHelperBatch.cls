@@ -34,8 +34,8 @@ public with sharing class PokemonsHelperBatch {
         newPokemon.ExtId__c = pokemonParsed.id;
         newPokemon.Name = pokemonParsed.name.capitalize();
         newPokemon.Name__c = pokemonParsed.name.capitalize();
-        newPokemon.Height__c = Double.valueOf(pokemonParsed.height) / 100;
-        newPokemon.Weight__c = Double.valueOf(pokemonParsed.weight) / 100;
+        newPokemon.Height__c = Double.valueOf(pokemonParsed.height) / 10;
+        newPokemon.Weight__c = Double.valueOf(pokemonParsed.weight) / 10;
         newPokemon.Image__c = pokemonParsed.sprites.front_default;   
         
 
@@ -57,11 +57,10 @@ public with sharing class PokemonsHelperBatch {
         
         
         // CREO VARIABLES PARA HABILIDADES ALEATORIAS
-        Integer randomAbility  = Integer.valueof((Math.random() * pokemonParsed.abilities.Size()));
+        Integer randomAbility = Integer.valueof((Math.random() * pokemonParsed.abilities.Size()));
         String ability = pokemonParsed.abilities.get(randomAbility).ability.name;  
              
         try {
-
             newPokemon.Abilities__c = [
                 SELECT Id 
                 FROM Ability__c 
@@ -92,11 +91,10 @@ public with sharing class PokemonsHelperBatch {
                     
   
         // CREO VARIABLE PARA MOVIMIENTOS ALEATORIAS   
-        try{
-            
+        try {
             Integer random = Integer.valueof((Math.random() * pokemonParsed.moves.Size()));
             String movement = pokemonParsed.moves.get(random).move.name;  
-
+           	
             newPokemon.Slot1__c = [
                 SELECT Id 
                 FROM Movement__c 
@@ -134,8 +132,7 @@ public with sharing class PokemonsHelperBatch {
         catch(System.NullPointerException error) {
             System.debug(error);
         }
-       
- 	           
+        
         // System.debug('Your pokemon is: ' + newPokemon);      
         return newPokemon;  
     }
