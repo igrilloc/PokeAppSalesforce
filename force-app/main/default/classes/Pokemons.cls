@@ -62,7 +62,15 @@ public with sharing class Pokemons {
 	}
 
 	public class cls_sprites {
-		public String front_default;	
+		public cls_other other;
+	}
+
+	public class cls_other {
+		public cls_home home;
+	}
+
+	public class cls_home {
+		public String front_default;
 	}
 	
 	public class cls_types {

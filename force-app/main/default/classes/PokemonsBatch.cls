@@ -17,10 +17,9 @@ public class PokemonsBatch implements Database.Batchable<Integer>,Database.Allow
     public void execute(Database.BatchableContext bc, List<Integer> records) {
         
         // process each batch of records
-        Integer pokemonId = Integer.valueOf(records[0]);
-        Pokemon__c pokemonToInsert = PokemonsHelperBatch.getPokemon(pokemonId);
+        List<Pokemon__c> pokemonToInsert = PokemonsHelperBatch.getPokemonsList(records);
 
-        if(pokemonToInsert != null) {
+        if(pokemonToInsert != null || !pokemonToInsert.isempty()) {
         	insert pokemonToInsert;
         }
     }

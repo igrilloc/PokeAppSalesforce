@@ -1,5 +1,23 @@
 public with sharing class PokemonsHelperBatch {
 
+
+    public static List<Pokemon__c> getPokemonsList(List<Integer> pokemonIdList) {
+
+        List<Pokemon__c> pokemonsListResult = new List<Pokemon__c>();
+
+        for(Integer idPokemon : pokemonIdList) {
+            
+            Pokemon__c pokeAux = getPokemon(idPokemon);
+            
+            if(pokeAux != null) {
+                pokemonsListResult.add(getPokemon(idPokemon));
+            }
+        }
+
+        return pokemonsListResult;
+    }
+
+
     public static Pokemon__c getPokemon(Integer pokemonId) {
         
         Http http = new Http();
@@ -36,7 +54,7 @@ public with sharing class PokemonsHelperBatch {
         newPokemon.Name__c = pokemonParsed.name.capitalize();
         newPokemon.Height__c = Double.valueOf(pokemonParsed.height) / 10;
         newPokemon.Weight__c = Double.valueOf(pokemonParsed.weight) / 10;
-        newPokemon.Image__c = pokemonParsed.sprites.front_default;   
+        newPokemon.Image__c = pokemonParsed.sprites.other.home.front_default;   
         
 
         for (Integer i = 0; i <= 4; i++) {
@@ -90,44 +108,53 @@ public with sharing class PokemonsHelperBatch {
         }
                     
   
-        // CREO VARIABLE PARA MOVIMIENTOS ALEATORIAS   
+        // CREO VARIABLE PARA MOVIMIENTOS   
         try {
-            Integer random = Integer.valueof((Math.random() * pokemonParsed.moves.Size()));
-            String movement = pokemonParsed.moves.get(random).move.name;  
-           	
-            newPokemon.Slot1__c = [
-                SELECT Id 
-                FROM Movement__c 
-                WHERE Name=:movement 
-                LIMIT 1
-            ].Id;
-            
-            random = Integer.valueof((Math.random() * pokemonParsed.moves.Size()));
-            movement = pokemonParsed.moves.get(random).move.name;
 
-            newPokemon.Slot2__c = [
-                SELECT Id 
-                FROM Movement__c
-                WHERE Name=:movement
-            ].Id;
+            if (pokemonParsed.moves.size() >= 1) {
+
+                String movement = pokemonParsed.moves.get(0).move.name; 
+
+                newPokemon.Slot1__c = [
+                    SELECT Id 
+                    FROM Movement__c 
+                    WHERE Name=:movement.capitalize()
+                    LIMIT 1
+                ].Id;
+            }
+
+            if (pokemonParsed.moves.size() >= 2) {
+
+                String movement = pokemonParsed.moves.get(1).move.name;
+
+                newPokemon.Slot2__c = [
+                    SELECT Id 
+                    FROM Movement__c
+                    WHERE Name=:movement.capitalize()
+                ].Id;
+            }
             
-            random = Integer.valueof((Math.random() * pokemonParsed.moves.Size()));
-            movement = pokemonParsed.moves.get(random).move.name;  
+            if (pokemonParsed.moves.size() >= 3) {
+
+                String movement = pokemonParsed.moves.get(2).move.name;  
             
-            newPokemon.Slot3__c = [
-                SELECT Id 
-                FROM Movement__c 
-                WHERE Name=:movement
-            ].Id;
+                newPokemon.Slot3__c = [
+                    SELECT Id 
+                    FROM Movement__c 
+                    WHERE Name=:movement
+                ].Id;
+            }
             
-            random = Integer.valueof((Math.random() * pokemonParsed.moves.Size()));
-            movement = pokemonParsed.moves.get(random).move.name;  
+            if (pokemonParsed.moves.size() >= 4) {
+
+                String movement = pokemonParsed.moves.get(3).move.name;  
             
-            newPokemon.Slot4__c = [
-                SELECT Id 
-                FROM Movement__c 
-                WHERE Name=:movement
-            ].Id; 
+                newPokemon.Slot4__c = [
+                    SELECT Id 
+                    FROM Movement__c 
+                    WHERE Name=:movement
+                ].Id; 
+            }         
         }
         catch(System.NullPointerException error) {
             System.debug(error);

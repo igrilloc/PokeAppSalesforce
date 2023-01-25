@@ -22,7 +22,7 @@ public class PokemonsBatchTest {
 		insert move4;
       
         // Creo una respuesta mock para la llamada HTTP a la API
-        String body = '{"id": 1,"weight":69, "height":8, "name": "bulbasaur", "sprites": {"front_default": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png"}, "types": [{"type": {"name": "grass"}}], "abilities": [{"ability": {"name": "overgrow"}}], "stats": [{"base_stat": 45}, {"base_stat": 49}, {"base_stat": 49}, {"base_stat": 65}, {"base_stat": 65}, {"base_stat": 45}], "moves": [{"move":{"name":"Toxic"}},{"move":{"name":"Poison-powder"}},{"move":{"name":"Ingrain"}},{"move":{"name":"Sludge"}}]}';
+        String body = '{"id": 1,"weight":69, "height":8, "name": "Bulbasaur", "sprites": {"other": {"home": {"front_default": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/1.png"}}}, "types": [{"type": {"name": "grass"}}], "abilities": [{"ability": {"name": "overgrow"}}], "stats": [{"base_stat": 45}, {"base_stat": 49}, {"base_stat": 49}, {"base_stat": 65}, {"base_stat": 65}, {"base_stat": 45}], "moves": [{"move":{"name":"Toxic"}},{"move":{"name":"Poison-powder"}},{"move":{"name":"Ingrain"}},{"move":{"name":"Sludge"}}]}';
         HttpCalloutMock mock = new PokemonBatchMock(body, 200);
         
         // Asigno el mock para las llamadas HTTP en el test
@@ -35,19 +35,19 @@ public class PokemonsBatchTest {
             Database.executeBatch(batch, 10);
         Test.stopTest();
         
-        // Comprobacion de inserción del objeto "Pokemon" con el nombre "Test"
+        // Comprobacion de inserción del objeto "Pokemon" con el nombre "Bulbasaur"
         List<Pokemon__c> poke = [
-            SELECT Name 
+            SELECT Name, ExtId__c, Image__c, Types__c, Weight__c, Height__c
             FROM Pokemon__c 
-            WHERE Name = 'Test'
+            WHERE Name = 'Bulbasaur'
         ];
         
-        System.assertEquals(poke[0].Name, 'Test');
-        System.assertEquals(poke[0].id, '135');
-        System.assertEquals(poke[0].Image__c, '{"front_default":"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/135.png"}');
-        System.assertEquals(poke[0].Types__c, '[{"type":{"name":"electric"}},{"type":{"name":"fire"}}]');
-        System.assertEquals(poke[0].Weight__c, 69);
-        System.assertEquals(poke[0].Height__c, 8);
+        System.assertEquals(poke[0].Name, 'Bulbasaur');
+        System.assertEquals(poke[0].ExtId__c, 1);
+        System.assertEquals(poke[0].Image__c, 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/1.png');
+        System.assertEquals(poke[0].Types__c, 'Grass');
+        System.assertEquals(poke[0].Weight__c, 6.90);
+        System.assertEquals(poke[0].Height__c, 0.8);
 		
     }
     
@@ -63,19 +63,23 @@ public class PokemonsBatchTest {
         }
         
         // Crea una respuesta mock para la llamada HTTP a la API
-        String mockResponse = '{"Name":"Adaptability","id":91,"effect_entries":[{"effect":"This Pokémon moves are powered up a little by same-type attack bonuses.","language":{"name":"en","url":"https://pokeapi.co/api/v2/language/9/"},"short_effect":"STAB moves have 1.2x power."}]}';
+        String mockResponse = 'Not found';
         
-        Test.setMock(HttpCalloutMock.class, new PokemonBatchMock(mockResponse, 400));
+        Test.setMock(HttpCalloutMock.class, new PokemonBatchMock(mockResponse, 404));
         
         // Ejecuta el proceso en batch y detiene la prueba
         PokemonsBatch batch = new PokemonsBatch(PokeIdList);
         
         Test.startTest();
-            try {
-                Database.executeBatch(batch, 10);
-            } catch (Exception e) {
-                System.assert(e.getMessage().contains('Error inserting Pokemon'));
-            }
+        	Database.executeBatch(batch, 10);
         Test.stopTest();
+        
+        // Comprobacion de inserción del objeto "Pokemon" con el nombre "Bulbasaur"
+        List<Pokemon__c> poke = [
+            SELECT Name, ExtId__c, Image__c, Types__c, Weight__c, Height__c
+            FROM Pokemon__c 
+        ];
+        
+        System.assertEquals(true, poke.isempty(),'La lista no está vacia');
     }    
 }
