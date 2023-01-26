@@ -3,10 +3,10 @@ public with sharing class Pokemons {
 	public Integer id;	                
 	public String name;	                
 	public Integer order;	            
+	public Integer weight;	            
     public Integer height;	            
 	public cls_sprites sprites;
 	public cls_types[] types;
-	public Integer weight;	            
 	public cls_abilities[] abilities;
 	public cls_stats[] stats;
 	public cls_moves[] moves;
