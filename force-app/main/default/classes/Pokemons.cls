@@ -1,8 +1,8 @@
 public with sharing class Pokemons {
     
+	
 	public Integer id;	                
-	public String name;	                
-	public Integer order;	            
+	public String name;	                	            
 	public Integer weight;	            
     public Integer height;	            
 	public cls_sprites sprites;

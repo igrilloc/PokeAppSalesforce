@@ -19,7 +19,7 @@ export default class PokemonTile extends NavigationMixin(LightningElement) {
 
     @api pokemon;
 
-
+    
     get isNormal() {
         return this.pokemon.Types__c.includes("Normal");
     }
@@ -91,8 +91,8 @@ export default class PokemonTile extends NavigationMixin(LightningElement) {
     get isFairy() {
         return this.pokemon.Types__c.includes("Fairy");
     }
-    
 
+    
     navigateToRecordViewPage() {
         // View a custom object record
         this[NavigationMixin.Navigate](
