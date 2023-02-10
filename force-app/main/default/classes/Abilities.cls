@@ -12,8 +12,8 @@ public with sharing class Abilities {
     }
 
     public class cls_language {
-		public String name;	            // en
-		public String url;	            // https://pokeapi.co/api/v2/language/9/
+		public String name;	            
+		public String url;	            
 	}
 
     public static Abilities parse(String json){
