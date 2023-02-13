@@ -1,6 +1,7 @@
 public with sharing class PokemonsHelperBatch {
 
 
+    // Construct list of pokemons Id for batch
     public static List<Pokemon__c> getPokemonsList(List<Integer> pokemonIdList) {
 
         List<Pokemon__c> pokemonsListResult = new List<Pokemon__c>();

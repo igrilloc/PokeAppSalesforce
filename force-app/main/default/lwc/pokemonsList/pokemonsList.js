@@ -2,7 +2,6 @@ import { LightningElement } from 'lwc';
 import getFilteredPokemon from '@salesforce/apex/PokemonsService.getFilteredPokemon';
 
 
-
 export default class PokemonList extends LightningElement {
 
 	// VARIABLES FOR PAGED:
@@ -32,16 +31,7 @@ export default class PokemonList extends LightningElement {
             this.error = error;
         });
     }
-
-
-	get getType () {
-		return (this.type === 'All');
-	}
-
-	get getGen () {
-		return (this.generation === 'All');
-	}
-
+	
 
 	connectedCallback() {
 		// Initialize pages
@@ -79,21 +69,20 @@ export default class PokemonList extends LightningElement {
 	}
 
 
-
 	// FILTER BY POKEMON NAME
 	handleSearchTextChange(event) {
 		
 		// console.log(event.detail.value);
         window.clearTimeout(this.delayTimeout);
 		const searchText = event.target.value;
-		
+
 		// eslint-disable-next-line @lwc/lwc/no-async-operation
         this.delayTimeout =  setTimeout(() => {
 			this.searchText = searchText;
 			this.handleLoadPokemonsPage();
 		}, 100);
 	}
-
+ 
 
 	// FILTER BY POKEMON GENERATION
 	get optionsGeneration () {

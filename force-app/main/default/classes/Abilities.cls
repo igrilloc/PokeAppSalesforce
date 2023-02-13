@@ -16,7 +16,7 @@ public with sharing class Abilities {
 		public String url;	            
 	}
 
-    public static Abilities parse(String json){
+    public static Abilities parse(String json) {
 		return (Abilities) System.JSON.deserialize(json, Abilities.class);
 	}
 }

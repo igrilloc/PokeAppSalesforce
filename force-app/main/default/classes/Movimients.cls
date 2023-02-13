@@ -26,7 +26,7 @@ public with sharing class Movimients {
         public String name;                 
     } 
         
-    public static Movimients parse(String json){
+    public static Movimients parse(String json) {
         return (Movimients) System.JSON.deserialize(json, Movimients.class);    
     }  
 }

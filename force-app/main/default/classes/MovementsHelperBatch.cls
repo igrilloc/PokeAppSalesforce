@@ -1,6 +1,25 @@
 public with sharing class MovementsHelperBatch {
 
-    public static Movement__c getMovimiento(Integer movimientId) {
+
+    // Construct list of movements Id for batch
+    public static List<Movement__c> getMovementsList(List<Integer> movementList) {
+
+        List<Movement__c> movementsListResult = new List<Movement__c>();
+
+        for(Integer idMovement : movementList) {
+            
+            Movement__c moveAux = getMovement(idMovement);
+            
+            if(moveAux != null) {
+                movementsListResult.add(getMovement(idMovement));
+            }
+        }
+
+        return movementsListResult;
+    }
+
+
+    public static Movement__c getMovement(Integer movimientId) {
         
         Http http = new Http();
         HttpRequest request = new HttpRequest();

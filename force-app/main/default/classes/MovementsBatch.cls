@@ -1,32 +1,31 @@
 public class MovementsBatch implements Database.Batchable<Integer>, Database.AllowsCallouts, Database.Stateful {
     
 
-    List<Integer> MovementList;
+    List<Integer> movementList;
     
     
-    public MovementsBatch(List<Integer> MovementList) {
-        this.MovementList = MovementList;
+    public MovementsBatch(List<Integer> movementList) {
+        this.movementList = movementList;
     }
 
 
     public Iterable<Integer> start(Database.BatchableContext bc) {
         // collect the batches of records or objects to be passed to execute
-        return this.MovementList;
+        return this.movementList;
     }
 
     public void execute(Database.BatchableContext bc, List<Integer> records) {
         
         // process each batch of records
-        Integer movimientId = Integer.valueOf(records[0]);
-        Movement__c movimientToInsert = MovementsHelperBatch.getMovimiento(movimientId);
+        List<Movement__c> movimientToInsert = MovementsHelperBatch.getMovementsList(records);
 
-            if(movimientToInsert != null) {
-                insert movimientToInsert;
-            }
-      
+        if(movimientToInsert != null || !movimientToInsert.isempty()) {
+            insert movimientToInsert;
+        }
     }
 
     public void finish(Database.BatchableContext bc) {
+        // execute any post-processing operations
         System.debug('Batch processing finished');
     }
 }

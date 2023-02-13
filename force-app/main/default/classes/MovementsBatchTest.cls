@@ -7,12 +7,12 @@ public class MovementsBatchTest {
         // Crea una lista de enteros con los IDs de los Abilitys
         List<Integer> MovesIdList = new List<Integer>();
         
-        for (Integer i = 1; i < 150; i++) {
+        for (Integer i = 1; i < 10; i++) {
             MovesIdList.add(i);
         }
 
         // Crea una respuesta mock para la llamada HTTP a la API
-		String mockResponse = '{"Name":"Adaptability","id":91,"effect_entries":[{"effect":"This Pokémon moves are powered up a little by same-type attack bonuses.","language":{"name":"en","url":"https://pokeapi.co/api/v2/language/9/"},"short_effect":"STAB moves have 1.2x power."}]}';        
+		String mockResponse = '{"id": 1, "name": "Pound", "accuracy": 100, "effect_chance": "null", "power": 40, "pp": 35, "priority": 0, "target": {"target": [], "name": "selected-pokemon"}, "type": {"type": [], "name": "normal"}, "effect_entries": [{"effect": "Inflicts regular damage.", "short_effect": "Regular damage."}]}';        
         
         Test.setMock(HttpCalloutMock.class, new PokemonBatchMock(mockResponse, 200));
         
@@ -20,45 +20,37 @@ public class MovementsBatchTest {
         MovementsBatch batch = new MovementsBatch(MovesIdList);
         
         Test.startTest();
-        	Database.executeBatch(batch, 150);
+        	Database.executeBatch(batch, 10);
         Test.stopTest();
 
-        // Comprobacion de inserción del objeto "Movement" con el nombre "Test"
-        List<Movement__c> ab = [
-            SELECT Name 
-            FROM Movement__c 
-            WHERE Name = 'Test Movement'
-        ];
-        
-        System.assertEquals(ab[0].Name, 'Test Movement');
+        // Comprobación de inserción del objeto "Movement" con el nombre "Pound"
+        List<Movement__c> movements = [SELECT Name FROM Movement__c WHERE Name = 'Pound'];
+        System.assertEquals(1, movements.size(), 'El objeto "Movement" no se insertó correctamente');
     }
-
     
     @isTest
-    static void testAbilityErrorBatch() {
+    static void testMovementNotFound() {
         
-        // Crea una lista de enteros con los IDs de los Movement
+        // Crea una lista de enteros con los IDs de los Abilitys
         List<Integer> MovesIdList = new List<Integer>();
         
-        for (Integer i = 1; i < 150; i++) {
-            MovesIdList.add(i);
-        }
+        // ID de un movimiento que no existe
+        MovesIdList.add(-1);
 
         // Crea una respuesta mock para la llamada HTTP a la API
-		String mockResponse = '{"Name":"Adaptability","id":91,"effect_entries":[{"effect":"This Pokémon moves are powered up a little by same-type attack bonuses.","language":{"name":"en","url":"https://pokeapi.co/api/v2/language/9/"},"short_effect":"STAB moves have 1.2x power."}]}';
+        String mockResponse = '{"message": "Not Found", "status": 404}';
         
-        Test.setMock(HttpCalloutMock.class, new PokemonBatchMock(mockResponse, 400));
+        Test.setMock(HttpCalloutMock.class, new PokemonBatchMock(mockResponse, 404));
         
         // Ejecuta el proceso en batch y detiene la prueba
         MovementsBatch batch = new MovementsBatch(MovesIdList);
         
         Test.startTest();
-        	try {
-            	Database.executeBatch(batch, 150);
-        	} 
-        	catch (Exception e) {
-            	System.assert(e.getMessage().contains('Error inserting Movement'));
-        	}
+        	Database.executeBatch(batch, 10);
         Test.stopTest();
+
+        // Comprobación de que no se insertó ningún objeto "Movement"
+        List<Movement__c> movements = [SELECT Name FROM Movement__c];
+        System.assertEquals(0, movements.size(), 'Se insertó un objeto "Movement" cuando no debía haber sido así');
     }
 }
