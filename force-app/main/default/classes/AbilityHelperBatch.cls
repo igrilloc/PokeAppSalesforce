@@ -41,15 +41,15 @@ public with sharing class AbilityHelperBatch {
     }
 
 
-    public static Ability__c returnedAbility(Abilities abilityParsed) {
+    public static Ability__c returnedAbility(Abilities abilityBodyToParse) {
         
         Ability__c newAbility = new Ability__c();
 
-        newAbility.Name__c = abilityParsed.Name.capitalize();
-        newAbility.Name = abilityParsed.Name.capitalize();
-        newAbility.ExtId__c = abilityParsed.id;
-        newAbility.Effect__c = abilityParsed.effect_entries.isEmpty() ? 'None' : (abilityParsed.id < 267 ? 
-       	abilityParsed.effect_entries[1].short_effect : abilityParsed.effect_entries[0].short_effect);
+        newAbility.Name__c = abilityBodyToParse.Name.capitalize();
+        newAbility.Name = abilityBodyToParse.Name.capitalize();
+        newAbility.ExtId__c = abilityBodyToParse.id;
+        newAbility.Effect__c = abilityBodyToParse.effect_entries.isEmpty() ? 'None' : (abilityBodyToParse.id < 191 ? 
+       	abilityBodyToParse.effect_entries[1].short_effect : abilityBodyToParse.effect_entries[0].short_effect);
             
         return newAbility;
     }

@@ -4,7 +4,7 @@ private class MovimientsTest {
     @isTest
     static void testParse() {
         
-        String json = '{"id":1,"name":"Pound","accuracy":100,"effect_chance":"—","power":40,"pp":35,"priority":0,"target":{"name":"selected-pokemon"},"type":{"name":"normal"}}';
+        String json = '{"id":1, "name":"Pound", "accuracy":100, "effect_chance":"—", "power":40, "pp":35, "priority":0, "target":{"name":"selected-pokemon"}, "type":{"name":"normal"}}';
 
         Movimients moviment = Movimients.parse(json);
 

@@ -28,7 +28,7 @@ public class PokemonsBatchTest {
         // Asigno el mock para las llamadas HTTP en el test
         Test.setMock(HttpCalloutMock.class, mock);
         
-        // Ejecuta el proceso en batch y detiene la prueba
+        // Ejecuto el proceso en batch y detiene la prueba
         PokemonsBatch batch = new PokemonsBatch(pokeIdList);
         
         Test.startTest();
@@ -55,19 +55,19 @@ public class PokemonsBatchTest {
     @isTest
     static void testPokeErrorBatch() {
         
-        // Crea una lista de enteros con los IDs de los Abilitys
+        // Creo una lista de enteros con los IDs de los Pokemons
         List<Integer> PokeIdList = new List<Integer>();
         
         for (Integer i = 1; i < 10; i++) {
             PokeIdList.add(i);
         }
         
-        // Crea una respuesta mock para la llamada HTTP a la API
+        // Creo una respuesta mock para la llamada HTTP a la API
         String mockResponse = 'Not found';
         
         Test.setMock(HttpCalloutMock.class, new PokemonBatchMock(mockResponse, 404));
         
-        // Ejecuta el proceso en batch y detiene la prueba
+        // Ejecuto el proceso en batch y detiengo la prueba
         PokemonsBatch batch = new PokemonsBatch(PokeIdList);
         
         Test.startTest();

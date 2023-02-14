@@ -46,16 +46,16 @@ public with sharing class PokemonsHelperBatch {
     }
 
 
-    public static Pokemon__c returnedPokemon(Pokemons pokemonParsed) {
+    public static Pokemon__c returnedPokemon(Pokemons pokemonBodyToParse) {
 
         Pokemon__c newPokemon = new Pokemon__c();
 
-        newPokemon.ExtId__c = pokemonParsed.id;
-        newPokemon.Name = pokemonParsed.name.capitalize();
-        newPokemon.Name__c = pokemonParsed.name.capitalize();
-        newPokemon.Height__c = Double.valueOf(pokemonParsed.height) / 10;
-        newPokemon.Weight__c = Double.valueOf(pokemonParsed.weight) / 10;
-        newPokemon.Image__c = pokemonParsed.sprites.other.home.front_default;   
+        newPokemon.ExtId__c = pokemonBodyToParse.id;
+        newPokemon.Name = pokemonBodyToParse.name.capitalize();
+        newPokemon.Name__c = pokemonBodyToParse.name.capitalize();
+        newPokemon.Height__c = Double.valueOf(pokemonBodyToParse.height) / 10;
+        newPokemon.Weight__c = Double.valueOf(pokemonBodyToParse.weight) / 10;
+        newPokemon.Image__c = pokemonBodyToParse.sprites.other.home.front_default;   
         
 
         for (Integer i = 0; i <= 4; i++) {
@@ -63,10 +63,10 @@ public with sharing class PokemonsHelperBatch {
             try {
                 
                 if(i == 0) {
-                    newPokemon.Types__c = pokemonParsed.types.get(i).type.name;
+                    newPokemon.Types__c = pokemonBodyToParse.types.get(i).type.name;
                 }
                 else {
-                    newPokemon.Types__c = newPokemon.Types__c + ';' + pokemonParsed.types.get(i).type.name;
+                    newPokemon.Types__c = newPokemon.Types__c + ';' + pokemonBodyToParse.types.get(i).type.name;
                 }
             }
             catch (Exception error) {
@@ -76,8 +76,8 @@ public with sharing class PokemonsHelperBatch {
         
         
         // CREO VARIABLES PARA HABILIDADES ALEATORIAS
-        Integer randomAbility = Integer.valueof((Math.random() * pokemonParsed.abilities.Size()));
-        String ability = pokemonParsed.abilities.get(randomAbility).ability.name;  
+        Integer randomAbility = Integer.valueof((Math.random() * pokemonBodyToParse.abilities.Size()));
+        String ability = pokemonBodyToParse.abilities.get(randomAbility).ability.name;  
              
         try {
             newPokemon.Abilities__c = [
@@ -92,29 +92,29 @@ public with sharing class PokemonsHelperBatch {
         }
           
         // CREO metodo try catch para que no largue error, el error que salia es que en el campo velocidad estaba fuera de los limites List index out of bounds: 5
-        if(pokemonParsed.stats.get(0).base_stat != Null) {
-            newPokemon.Life__c = String.valueOf(pokemonParsed.stats.get(0).base_stat);
+        if(pokemonBodyToParse.stats.get(0).base_stat != Null) {
+            newPokemon.Life__c = String.valueOf(pokemonBodyToParse.stats.get(0).base_stat);
         }
         
-        if(pokemonParsed.stats.get(1).base_stat != Null) {
-        	newPokemon.Attack__c = String.valueOf(pokemonParsed.stats.get(1).base_stat);
+        if(pokemonBodyToParse.stats.get(1).base_stat != Null) {
+        	newPokemon.Attack__c = String.valueOf(pokemonBodyToParse.stats.get(1).base_stat);
         }
         
-        if(pokemonParsed.stats.get(2).base_stat != Null) {
-            newPokemon.Defense__c = String.valueOf(pokemonParsed.stats.get(2).base_stat);
+        if(pokemonBodyToParse.stats.get(2).base_stat != Null) {
+            newPokemon.Defense__c = String.valueOf(pokemonBodyToParse.stats.get(2).base_stat);
         }
         
-        if(pokemonParsed.stats.get(5).base_stat != Null) {
-            newPokemon.Speed__c = String.valueOf(pokemonParsed.stats.get(5).base_stat);
+        if(pokemonBodyToParse.stats.get(5).base_stat != Null) {
+            newPokemon.Speed__c = String.valueOf(pokemonBodyToParse.stats.get(5).base_stat);
         }
                     
   
         // CREO VARIABLE PARA MOVIMIENTOS   
         try {
 
-            if (pokemonParsed.moves.size() >= 1) {
+            if (pokemonBodyToParse.moves.size() >= 1) {
 
-                String movement = pokemonParsed.moves.get(0).move.name; 
+                String movement = pokemonBodyToParse.moves.get(0).move.name; 
 
                 newPokemon.Slot1__c = [
                     SELECT Id 
@@ -124,9 +124,9 @@ public with sharing class PokemonsHelperBatch {
                 ].Id;
             }
 
-            if (pokemonParsed.moves.size() >= 2) {
+            if (pokemonBodyToParse.moves.size() >= 2) {
 
-                String movement = pokemonParsed.moves.get(1).move.name;
+                String movement = pokemonBodyToParse.moves.get(1).move.name;
 
                 newPokemon.Slot2__c = [
                     SELECT Id 
@@ -135,9 +135,9 @@ public with sharing class PokemonsHelperBatch {
                 ].Id;
             }
             
-            if (pokemonParsed.moves.size() >= 3) {
+            if (pokemonBodyToParse.moves.size() >= 3) {
 
-                String movement = pokemonParsed.moves.get(2).move.name;  
+                String movement = pokemonBodyToParse.moves.get(2).move.name;  
             
                 newPokemon.Slot3__c = [
                     SELECT Id 
@@ -146,9 +146,9 @@ public with sharing class PokemonsHelperBatch {
                 ].Id;
             }
             
-            if (pokemonParsed.moves.size() >= 4) {
+            if (pokemonBodyToParse.moves.size() >= 4) {
 
-                String movement = pokemonParsed.moves.get(3).move.name;  
+                String movement = pokemonBodyToParse.moves.get(3).move.name;  
             
                 newPokemon.Slot4__c = [
                     SELECT Id 
