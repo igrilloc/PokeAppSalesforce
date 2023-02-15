@@ -58,7 +58,7 @@ public with sharing class PokemonsHelperBatch {
         newPokemon.Image__c = pokemonBodyToParse.sprites.other.home.front_default;   
         
 
-        for (Integer i = 0; i <= 2; i++) {
+        for (Integer i = 0; i <= 4; i++) {
             try {
                 if(i == 0) {
                     newPokemon.Types__c = pokemonBodyToParse.types.get(i).type.name;
