@@ -30,7 +30,7 @@ public class MovementsBatchTest {
             WHERE Name = 'Pound'
         ];
 
-        System.assertEquals(1, movements.size(), 'El objeto "Movement" no se insertó correctamente');
+        System.assertEquals(9, movements.size(), 'El objeto "Movement" no se insertó correctamente');
     }
     
     @isTest

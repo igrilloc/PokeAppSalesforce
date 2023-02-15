@@ -1,4 +1,4 @@
-public class PokemonsBatch implements Database.Batchable<Integer>,Database.AllowsCallouts,Database.Stateful{
+public class PokemonsBatch implements Database.Batchable<Integer>, Database.AllowsCallouts, Database.Stateful {
     
 
     List<Integer> PokemonList;

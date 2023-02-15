@@ -12,10 +12,10 @@ public class PokemonsBatchTest {
         }
         
         // Creo test data para Movement__c
-        Movement__c move1 = new Movement__c(Name='Toxic');
-        Movement__c move2 = new Movement__c(Name='Poison-powder');
-        Movement__c move3 = new Movement__c(Name='Ingrain');
-        Movement__c move4 = new Movement__c(Name='Sludge');
+        Movement__c move1 = new Movement__c(Name = 'Toxic');
+        Movement__c move2 = new Movement__c(Name = 'Poison-powder');
+        Movement__c move3 = new Movement__c(Name = 'Ingrain');
+        Movement__c move4 = new Movement__c(Name = 'Sludge');
         insert move1; 
         insert move2;
 		insert move3;

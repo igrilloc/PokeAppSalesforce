@@ -58,10 +58,8 @@ public with sharing class PokemonsHelperBatch {
         newPokemon.Image__c = pokemonBodyToParse.sprites.other.home.front_default;   
         
 
-        for (Integer i = 0; i <= 4; i++) {
-                
+        for (Integer i = 0; i <= 2; i++) {
             try {
-                
                 if(i == 0) {
                     newPokemon.Types__c = pokemonBodyToParse.types.get(i).type.name;
                 }
@@ -91,20 +89,20 @@ public with sharing class PokemonsHelperBatch {
             System.debug(error);
         }
           
-        // CREO metodo try catch para que no largue error, el error que salia es que en el campo velocidad estaba fuera de los limites List index out of bounds: 5
-        if(pokemonBodyToParse.stats.get(0).base_stat != Null) {
+        // Creo metodo try catch para que no largue error, el error que salia es que en el campo velocidad estaba fuera de los limites List index out of bounds: 5
+        if(pokemonBodyToParse.stats.get(0).base_stat != null) {
             newPokemon.Life__c = String.valueOf(pokemonBodyToParse.stats.get(0).base_stat);
         }
         
-        if(pokemonBodyToParse.stats.get(1).base_stat != Null) {
+        if(pokemonBodyToParse.stats.get(1).base_stat != null) {
         	newPokemon.Attack__c = String.valueOf(pokemonBodyToParse.stats.get(1).base_stat);
         }
         
-        if(pokemonBodyToParse.stats.get(2).base_stat != Null) {
+        if(pokemonBodyToParse.stats.get(2).base_stat != null) {
             newPokemon.Defense__c = String.valueOf(pokemonBodyToParse.stats.get(2).base_stat);
         }
         
-        if(pokemonBodyToParse.stats.get(5).base_stat != Null) {
+        if(pokemonBodyToParse.stats.get(5).base_stat != null) {
             newPokemon.Speed__c = String.valueOf(pokemonBodyToParse.stats.get(5).base_stat);
         }
                     
