@@ -12,7 +12,7 @@ public class AbilityBatchTest {
         }
 
         // Creo una respuesta mock para la llamada HTTP a la API
-		String mockResponse = '{"Name": "Overgrow", "id": 1, "effect_entries": [{"effect": "When the weather is sunny, the power of Grass-type moves is increased by 50%.", "language": {"name":"en", "url": "https://pokeapi.co/api/v2/language/9/"}, "short_effect": "Grass-type moves have 50% power in sun."}]}';
+		String mockResponse = '{"Name": "Adaptability", "id": 1, "effect_entries": [{"effect": "When the weather is sunny, the power of Grass-type moves is increased by 50%.", "language": {"name":"en", "url": "https://pokeapi.co/api/v2/language/9/"}, "short_effect": "Grass-type moves have 50% power in sun."}]}';
         
         Test.setMock(HttpCalloutMock.class, new PokemonBatchMock(mockResponse, 200));
         

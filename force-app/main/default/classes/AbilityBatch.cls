@@ -27,5 +27,16 @@ public class AbilityBatch implements Database.Batchable<Integer>, Database.Allow
     public void finish(Database.BatchableContext bc) {
         // execute any post-processing operations
         System.debug('Batch processing finished');
+
+        /*
+        list<Integer> movementList = new list<Integer>();
+	
+        for (Integer i = 1 ; i <= 826 ; i++) {
+            movementList.add(i);
+        }
+	
+        MovementsBatch batch = new MovementsBatch(movementList);
+        Database.executeBatch(batch, 20);
+        */
     }
 }

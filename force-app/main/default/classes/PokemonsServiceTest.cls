@@ -20,13 +20,14 @@ public with sharing class PokemonsServiceTest {
     // Test que comprueba si se obtienen los registros correctos al filtrar por un peso máximo específico
     @isTest
     public static void getFilteredPokemonByMaxWeightTest() {
-        // Crea dos registros de Pokemon__c, uno con un peso de 60 y otro con un peso de 80
+        
+        // Creo dos registros de Pokemon__c, uno con un peso de 60 y otro con un peso de 800
         Pokemon__c lightPokemon = new Pokemon__c(Name = 'Pikachu', Weight__c = 60);
         Pokemon__c heavyPokemon = new Pokemon__c(Name = 'Snorlax', Weight__c = 800);
         
         insert new List<Pokemon__c>{lightPokemon, heavyPokemon};
         
-        // Llama al método getFilteredPokemon con un peso máximo de 70 y comprueba si se obtiene el registro correcto
+        // Llamo al método getFilteredPokemon con un peso máximo de 70 y comprueba si se obtiene el registro correcto
         List<Pokemon__c> filteredPokemon = PokemonsService.getFilteredPokemon('', '', '70');
         
         System.assertEquals(1, filteredPokemon.size());
@@ -55,5 +56,25 @@ public with sharing class PokemonsServiceTest {
         System.assertEquals(pokemonSearch[0].Generation__c, '1ra');
         System.assertEquals(pokemonSearch[0].Height__c, 4);
         System.assertEquals(pokemonSearch[0].Weight__c, 60);
+    }
+
+
+    @isTest
+    public static void PokemonsServiceError() {
+
+        Test.startTest();
+            insert new Pokemon__c(ExtId__c = 1);
+        Test.stopTest();
+
+        List<Pokemon__c> pokemonToSearch = [
+            SELECT Name, ExtId__c, Types__c, Generation__c, Height__c, Weight__c
+            FROM Pokemon__c
+            WHERE ExtId__c = 2
+            LIMIT 1
+        ];
+
+        List<Pokemon__c> pokemonSearch = PokemonsService.getFilteredPokemon('Pikachu', 'Grass', '1ra');
+
+        System.assertEquals(pokemonSearch.get(0), pokemonToSearch.get(0));
     }
 }

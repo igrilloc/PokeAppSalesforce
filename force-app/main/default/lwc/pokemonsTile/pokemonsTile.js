@@ -19,7 +19,7 @@ export default class PokemonTile extends NavigationMixin(LightningElement) {
 
     @api pokemon;
 
-    
+
     get isNormal() {
         return this.pokemon.Types__c.includes("Normal");
     }

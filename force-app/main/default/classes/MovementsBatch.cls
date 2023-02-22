@@ -27,5 +27,16 @@ public class MovementsBatch implements Database.Batchable<Integer>, Database.All
     public void finish(Database.BatchableContext bc) {
         // execute any post-processing operations
         System.debug('Batch processing finished');
+
+        /*
+        list<Integer> PokemonList = new list<Integer>();
+        
+        for (Integer i = 1 ; i <= 898 ; i++) {
+            PokemonList.add(i);
+        }
+		
+        PokemonsBatch batch = new PokemonsBatch(PokemonList);
+        Database.executeBatch(batch, 20);
+        */
     }
 }
