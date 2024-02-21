@@ -19,7 +19,7 @@ public class AbilityBatch implements Database.Batchable<Integer>, Database.Allow
         // process each batch of records
         List<Ability__c> abilityToInsert = AbilityHelperBatch.getAbilitiesList(records);
 
-        if(abilityToInsert != null || !abilityToInsert.isempty()) {
+        if (abilityToInsert != null || !abilityToInsert.isempty()) {
             insert abilityToInsert;
         }
     }
@@ -28,7 +28,7 @@ public class AbilityBatch implements Database.Batchable<Integer>, Database.Allow
         // execute any post-processing operations
         System.debug('Batch processing finished');
 
-        /*
+        
         list<Integer> movementList = new list<Integer>();
 	
         for (Integer i = 1 ; i <= 826 ; i++) {
@@ -37,6 +37,6 @@ public class AbilityBatch implements Database.Batchable<Integer>, Database.Allow
 	
         MovementsBatch batch = new MovementsBatch(movementList);
         Database.executeBatch(batch, 20);
-        */
+        
     }
 }

@@ -6,11 +6,11 @@ public with sharing class MovementsHelperBatch {
 
         List<Movement__c> movementsListResult = new List<Movement__c>();
 
-        for(Integer idMovement : movementList) {
+        for (Integer idMovement : movementList) {
             
             Movement__c moveAux = getMovement(idMovement);
             
-            if(moveAux != null) {
+            if (moveAux != null) {
                 movementsListResult.add(getMovement(idMovement));
             }
         }
@@ -31,7 +31,7 @@ public with sharing class MovementsHelperBatch {
 		Movimients movimentBodyToParse = new Movimients();
         
 
-        if(response.getStatusCode() == 200) {
+        if (response.getStatusCode() == 200) {
 
             String result = String.valueOf(response.getBody());
             movimentBodyToParse = Movimients.parse(result);

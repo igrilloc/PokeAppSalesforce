@@ -26,7 +26,7 @@ public with sharing class AbilityHelperBatch {
         Abilities abilityBodyToParse = new Abilities();
 
 
-        if(response.getStatusCode() == 200) {
+        if (response.getStatusCode() == 200) {
 
             String result = String.valueOf(response.getBody());
             abilityBodyToParse = Abilities.parse(result);

@@ -1,6 +1,5 @@
 public with sharing class Pokemons {
-    
-	
+
 	public Integer id;	                
 	public String name;	                	            
 	public Integer weight;	            
@@ -10,7 +9,6 @@ public with sharing class Pokemons {
 	public cls_abilities[] abilities;
 	public cls_stats[] stats;
 	public cls_moves[] moves;
-
 	
 	public class cls_moves {
 		public cls_move move;

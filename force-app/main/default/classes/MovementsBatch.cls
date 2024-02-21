@@ -19,7 +19,7 @@ public class MovementsBatch implements Database.Batchable<Integer>, Database.All
         // process each batch of records
         List<Movement__c> movimientToInsert = MovementsHelperBatch.getMovementsList(records);
 
-        if(movimientToInsert != null || !movimientToInsert.isempty()) {
+        if (movimientToInsert != null || !movimientToInsert.isempty()) {
             insert movimientToInsert;
         }
     }
@@ -28,7 +28,7 @@ public class MovementsBatch implements Database.Batchable<Integer>, Database.All
         // execute any post-processing operations
         System.debug('Batch processing finished');
 
-        /*
+        
         list<Integer> PokemonList = new list<Integer>();
         
         for (Integer i = 1 ; i <= 898 ; i++) {
@@ -37,6 +37,6 @@ public class MovementsBatch implements Database.Batchable<Integer>, Database.All
 		
         PokemonsBatch batch = new PokemonsBatch(PokemonList);
         Database.executeBatch(batch, 20);
-        */
+        
     }
 }

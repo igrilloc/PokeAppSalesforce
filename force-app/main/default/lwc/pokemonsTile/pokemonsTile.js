@@ -21,75 +21,75 @@ export default class PokemonTile extends NavigationMixin(LightningElement) {
 
 
     get isNormal() {
-        return this.pokemon.Types__c.includes("Normal");
+        return this.pokemon.Types__c.includes('Normal');
     }
 
     get isFighting() {
-        return this.pokemon.Types__c.includes("Fighting");
+        return this.pokemon.Types__c.includes('Fighting');
     }
     
     get isFlying() {
-        return this.pokemon.Types__c.includes("Flying");
+        return this.pokemon.Types__c.includes('Flying');
     }
 
     get isPoison() {
-        return this.pokemon.Types__c.includes("Poison");
+        return this.pokemon.Types__c.includes('Poison');
     }
 
     get isGround() {
-        return this.pokemon.Types__c.includes("Ground");
+        return this.pokemon.Types__c.includes('Ground');
     }
 
     get isRock() {
-        return this.pokemon.Types__c.includes("Rock");
+        return this.pokemon.Types__c.includes('Rock');
     }
 
     get isBug() {
-        return this.pokemon.Types__c.includes("Bug");
+        return this.pokemon.Types__c.includes('Bug');
     }
 
     get isGhost() {
-        return this.pokemon.Types__c.includes("Ghost");
+        return this.pokemon.Types__c.includes('Ghost');
     }
 
     get isSteel() {
-        return this.pokemon.Types__c.includes("Steel");
+        return this.pokemon.Types__c.includes('Steel');
     }
 
     get isFire() {
-        return this.pokemon.Types__c.includes("Fire");
+        return this.pokemon.Types__c.includes('Fire');
     }
 
     get isWater() {
-        return this.pokemon.Types__c.includes("Water");
+        return this.pokemon.Types__c.includes('Water');
     }
 
     get isGrass() {
-        return this.pokemon.Types__c.includes("Grass");
+        return this.pokemon.Types__c.includes('Grass');
     }
     
     get isElectric() {
-        return this.pokemon.Types__c.includes("Electric");
+        return this.pokemon.Types__c.includes('Electric');
     }
 
     get isPsychic() {
-        return this.pokemon.Types__c.includes("Psychic");
+        return this.pokemon.Types__c.includes('Psychic');
     }
 
     get isIce() {
-        return this.pokemon.Types__c.includes("Ice");
+        return this.pokemon.Types__c.includes('Ice');
     }
 
     get isDragon() {
-        return this.pokemon.Types__c.includes("Dragon");
+        return this.pokemon.Types__c.includes('Dragon');
     }
 
     get isDark() {
-        return this.pokemon.Types__c.includes("Dark");
+        return this.pokemon.Types__c.includes('Dark');
     }
 
     get isFairy() {
-        return this.pokemon.Types__c.includes("Fairy");
+        return this.pokemon.Types__c.includes('Fairy');
     }
 
     

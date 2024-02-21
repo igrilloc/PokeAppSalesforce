@@ -19,7 +19,7 @@ public class PokemonsBatch implements Database.Batchable<Integer>, Database.Allo
         // process each batch of records
         List<Pokemon__c> pokemonToInsert = PokemonsHelperBatch.getPokemonsList(records);
 
-        if(pokemonToInsert != null || !pokemonToInsert.isempty()) {
+        if (pokemonToInsert != null || !pokemonToInsert.isempty()) {
         	insert pokemonToInsert;
         }
     }
